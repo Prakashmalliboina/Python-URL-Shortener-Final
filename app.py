@@ -12,9 +12,8 @@ app = Flask(__name__)
 
 # Configure SQLAlchemy (Database setup)
 # We will use a simple SQLite database file named 'urls.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'urls.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///urls.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 # Initialize the SQLAlchemy object with the Flask app
 db = SQLAlchemy(app)
 
@@ -112,6 +111,10 @@ def redirect_to_long_url(short_id):
 def index():
     """A basic HTML page to show the app is running."""
     return render_template('index.html')
+
+with app.app_context():
+    # This checks if the tables are created and creates them if they aren't.
+    db.create_all()
 
 if __name__ == '__main__':
     # This block is currently for development/testing
